@@ -20,13 +20,10 @@ def pos_mat_projection(P, hist):
         proj = (cumsum - exp_sum) / np.arange(1, n+1)
         i = np.argmax(proj >= sorted_x) - 1
         proj = proj[i] if i >= 0 else (np.sum(x) - exp_sum) / n
-        # return projection
         return np.maximum(x - proj, 0)
 
 
-    # vectorise projection function
     projection = np.vectorize(projection, signature='(n),()->(n)')
-    # apply projection to each row of P
     proj = projection(P, hist)
 
     return proj
