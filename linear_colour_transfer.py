@@ -1,9 +1,9 @@
 import numpy as np
 import imageio
-from numpy.linalg import cholesky, svd, eigh
+from numpy.linalg import cholesky, eigh
 
 class LinearColourTransfer():
-    def __init__(self, source, target, method=['cholesky', 'pca', 'svd'], norm_eps=1e-6):
+    def __init__(self, source, target, method=['cholesky', 'pca'], norm_eps=1e-6):
         self.source_img = imageio.imread(source, pilmode='RGB').astype(np.float32) / 255.0
         self.target_img = imageio.imread(target, pilmode='RGB').astype(np.float32) / 255.0
         self.method = method
@@ -29,8 +29,6 @@ class LinearColourTransfer():
             transform = self.cholesky(target_cov, source_cov)
         elif self.method == 'pca':
             transform = self.pca(target_cov, source_cov)
-        elif self.method == 'svd':
-            transform = self.svd(target_cov, source_cov)
         else:
             raise NotImplementedError
 
@@ -69,6 +67,3 @@ class LinearColourTransfer():
         # compute the transformation matrix
         transform = target_transform @ np.linalg.inv(source_transform)
         return transform
-
-    def svd(target_cov, source_cov):
-        pass
